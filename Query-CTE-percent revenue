@@ -1,0 +1,23 @@
+--A query utilizing CTE to calculate how much percent the top and bottom 10 movies revenue is of the total revenue
+
+SELECT (SUM(avg_revenue) / SUM(total_revenue)) * 100 AS percentage									
+FROM (									
+	SELECT SUM(amount) AS total_revenue								
+	FROM payment								
+	) t1, (								
+		SELECT avg_revenue							
+		FROM							
+		(							
+			SELECT AVG(revenue) AS avg_revenue						
+			FROM (						
+				SELECT FIL.title, SUM(amount) as revenue					
+				FROM payment PAY					
+				JOIN rental REN ON PAY.rental_id = REN.rental_id					
+				JOIN inventory INV ON REN.inventory_id = INV.inventory_id					
+				JOIN film FIL ON INV.film_id = FIL.film_id 					
+				GROUP BY FIL.title					
+				ORDER BY revenue DESC 					
+				LIMIT 10					
+				)top_10_movies					
+		)avg_revenue_top_10							
+	)t2								
