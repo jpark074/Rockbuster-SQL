@@ -1,0 +1,10 @@
+--A query utilizing joins to get the transaction counts of each customer as well as the country and the city they are from
+SELECT CONCAT(CUS.first_name, ' ', CUS.last_name) AS name, COU.country, CIT.city, SUM(PAY.amount) AS total_amount_paid, COUNT(DISTINCT payment_id) AS transaction_count				
+FROM customer CUS				
+JOIN address ADD ON CUS.address_id = ADD.address_id				
+JOIN city CIT ON ADD.city_id = CIT.city_id				
+JOIN country COU ON CIT.country_id = COU.country_id				
+JOIN payment PAY ON CUS.customer_id = PAY.customer_id				
+GROUP BY country, city, first_name, last_name, CUS.customer_id				
+ORDER BY transaction_count Desc				
+LIMIT 10				
