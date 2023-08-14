@@ -1,0 +1,32 @@
+--A query utilizing CTE to rename regions column from country_regions table to sub_regions and group the sub_regions into larger regions
+
+SELECT sub_region, region						
+FROM country_regions						
+GROUP BY sub_region, region;						
+						
+ALTER TABLE country_regions						
+RENAME region TO sub_region;						
+						
+ALTER TABLE country_regions						
+ADD COLUMN region VARCHAR(50);						
+						
+UPDATE country_regions						
+SET region = 'Asia'						
+WHERE sub_region LIKE '%Asia%' OR sub_region = 'Middle East';						
+						
+UPDATE country_regions						
+SET region = 'Americas'						
+WHERE sub_region LIKE '%America%' OR sub_region = 'Caribbean';						
+						
+UPDATE country_regions						
+SET region = 'Africa'						
+WHERE sub_region LIKE '%Africa%';						
+						
+UPDATE country_regions						
+SET region = 'Europe'						
+WHERE sub_region LIKE '%Europe%';						
+						
+UPDATE country_regions						
+SET region = 'Oceania'						
+WHERE sub_region LIKE '%Oceania%';				
+						
